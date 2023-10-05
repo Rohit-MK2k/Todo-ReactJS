@@ -1,3 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Short+Stack&family=Ubuntu&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+*{
+    box-sizing: border-box;
+    margin: 0px;
+    font-family: 'Short Stack', cursive;
+}
+.splash,.sign-up,.login{
+    background-color: #FFBB5C;
+}
+.splash-container{
+    width: 30rem;
+    height: 25rem;
+}
+.splash-link{
+    border: 2px solid black;
+    transition: 110ms;
+}
+.splash-link:hover{
+    background-color: black;
+    color: white;
+}
+.header-splash{
+    font-size: 3.5em;
+}
+.sign-up-container,.login-container{
+    width: 30rem;
+    height: 40rem;
+}
+.form-group{
+    position: relative;
+}
+.form-field{
+    border: 1px solid gray;
+    outline: none;
+    background: transparent;
+}
+.form-field::placeholder{
+   color: transparent;
+}
+.form-label{
+    position: absolute;
+    display: block;
+    top: -10px;
+    left: 8px;
+    background-color: white;
+    color: black;
+    font-size: 0.75em;
+    transition: 0.4s;
+}
+.form-field:placeholder-shown ~ .form-label{
+    top: 7px;
+    font-size: 1em;
+    padding-left: 2px;
+    cursor: text;
+    background-color: transparent;
+    color: lightgray;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.form-link{
+    color: #FFBB5C;
+    transition: 0.1s;
+}
+.form-link:hover{
+    color: #C63D2F;
+    text-decoration: underline;
+}
+
+
