@@ -1,18 +1,23 @@
 const express = require('express')
 const dotenv = require("dotenv")
 const path = require('path')
-const firebase = require('firebase-admin')
 const userRoutes = require('./Routes/userRoutes')
-const fireConfig = require('./Config/FirebaseConfig')
+const userList = require('./Routes/listRoutes')
+const connectDB = require('./Config/db')
+const { errorHandler } = require('./Middlewares/errorMiddleware')
 
 dotenv.config()
+connectDB()
 
 const app = express()
 const port = process.env.PORT
 
 app.use(express.json())
 
-app.use("/api/user",userRoutes)
+app.use("/api/user", userRoutes)
+app.use("/api/todo", userList)
+
+
  
 
 
@@ -38,6 +43,5 @@ if (process.env.NODE_ENV === "production") {
 // --------------------------deployment------------------------------
 
 
-
-
-const server = app.listen(port,console.log(`Server is running in port ${port}`))
+app.use(errorHandler)
+app.listen(port,console.log(`Server is running in port ${port}`))
