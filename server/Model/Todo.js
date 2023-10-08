@@ -12,6 +12,7 @@ const todoModel = mongoose.Schema({
     startTime: {
         type: Date,
         default: Date.now,
+        
     },
     endTime: {
         type: Date,
