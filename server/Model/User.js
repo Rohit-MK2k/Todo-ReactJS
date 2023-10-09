@@ -7,12 +7,17 @@ const userModel = mongoose.Schema({
     },
     email: {
         type: String,
-        require: true
+        require: true,
+        unique: true
     },
     password: {
         type: String,
         require: true
     }
-})
+},
+{
+    timestamps: true,
+}
+)
 
-module.exports = mongoose.Model('Todo',userModel)
+module.exports = mongoose.model('User',userModel)

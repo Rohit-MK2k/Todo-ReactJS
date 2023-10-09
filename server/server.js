@@ -3,24 +3,21 @@ const dotenv = require("dotenv")
 const path = require('path')
 const userRoutes = require('./Routes/userRoutes')
 const userList = require('./Routes/listRoutes')
-const connectDB = require('./Config/db')
+const bodyParser = require('body-parser')
 const { errorHandler } = require('./Middlewares/errorMiddleware')
+const connectDB = require('./Config/db')
 
 dotenv.config()
+const port = process.env.PORT
 connectDB()
 
 const app = express()
-const port = process.env.PORT
 
 app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use("/api/user", userRoutes)
 app.use("/api/todo", userList)
-
-
- 
-
-
 
 
 

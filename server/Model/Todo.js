@@ -18,6 +18,9 @@ const todoModel = mongoose.Schema({
         type: Date,
         require: true,
     }
+},
+{
+    timestamps: true,
 })
 
 module.exports = mongoose.model('Todo',todoModel)
