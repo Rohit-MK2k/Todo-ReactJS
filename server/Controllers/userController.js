@@ -1,17 +1,17 @@
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
 const asyncHandler = require('express-async-handler')
 const userModel = require('../Model/User')
+const generateToken = require('../Utils/generateToken')
+const { compare } = require('bcrypt')
 
 // @desc   write data to TODO list database
 // @route  POST / api / user
-// @access Private
+// @access Public
 const registerUser = asyncHandler(async (req, res) => {
     let {name, email, password } = req.body
 
-    if (!name || !email || !password) {
+    if (!email || !password) {
         res.status(400)
-        throw new Error("Please enter all the credentials!")
+        throw new Error("Please enter email address and password!")
     }
     
     const userExists = await userModel.findOne({email})
@@ -21,23 +21,20 @@ const registerUser = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error("Email already exists!")
     }
-
-    // hash password
-    const salt = await bcrypt.genSalt(10)
-    const hashPassword = await bcrypt.hash(password, salt)  
     
     // create new user
     const user = await userModel.create({
         name,
         email,
-        password: hashPassword
+        password
     })
 
     if (user) {
+        generateToken(res, user._id)
         res.status(200).json({
             _id: user.id,
             name: user.name,
-            token: generateToken(user._id),
+            email: user.email
         })
     }
     else {
@@ -49,19 +46,20 @@ const registerUser = asyncHandler(async (req, res) => {
 
 // @desc   write data to TODO list database
 // @route  POST / api / user / login
-// @access Private
+// @access Public
 const loginUser = asyncHandler(async (req, res) => {    
     let {email, password} = req.body
 
     user = await userModel.findOne({ email })
-    cheackPassword = await bcrypt.compare(password, user.password)
-    
-    if (user && cheackPassword) {
+    console.log(user)
+    comparePassword = await user.matchPassword(password)
+
+    if (user && comparePassword) {
+        generateToken(res, user._id)
         res.status(201).json({
             _id: user.id,
             name: user.name,
             email: user.email,
-            token: generateToken(user._id),
         })
     }
     else {
@@ -75,12 +73,7 @@ const getUser = asyncHandler(async (res, req) => {
     
 })
 
-//Generate JWT Token
-const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: '30d',
-    })
-}
+
 
 
 module.exports = { registerUser, loginUser, getUser }
