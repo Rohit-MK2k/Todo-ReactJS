@@ -1,9 +1,8 @@
 const asyncHandler = require('express-async-handler')
 const userModel = require('../Model/User')
 const generateToken = require('../Utils/generateToken')
-const { compare } = require('bcrypt')
 
-// @desc   write data to TODO list database
+// @desc   Register new user
 // @route  POST / api / user
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
@@ -44,14 +43,13 @@ const registerUser = asyncHandler(async (req, res) => {
 })
 
 
-// @desc   write data to TODO list database
+// @desc   Autherise user
 // @route  POST / api / user / login
 // @access Public
 const loginUser = asyncHandler(async (req, res) => {    
     let {email, password} = req.body
 
     user = await userModel.findOne({ email })
-    console.log(user)
     comparePassword = await user.matchPassword(password)
 
     if (user && comparePassword) {
@@ -69,11 +67,30 @@ const loginUser = asyncHandler(async (req, res) => {
     
 })
 
-const getUser = asyncHandler(async (res, req) => {
-    
+
+const logOut = asyncHandler(async (req, res) =>{
+    res.cookie('jwt', '',{
+        httpOnly: true,
+        expires: new Date(0)
+    })
+
+    res.status(200).json({ message: 'User Logged out'})
+})
+
+
+// @desc   Fetch the user information
+// @route  GET / api / user / profile
+// @access Private
+const getUser = asyncHandler(async (req, res) => {
+    const user = {
+        _id: req.user._id,
+        name: req.user.name,
+        email: req.user.email
+    }
+    res.status(200).json(user)
 })
 
 
 
 
-module.exports = { registerUser, loginUser, getUser }
+module.exports = { registerUser, loginUser, getUser, logOut }

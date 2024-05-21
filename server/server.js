@@ -1,5 +1,6 @@
 const express = require('express')
 const dotenv = require("dotenv")
+const cookieParser = require("cookie-parser")
 const path = require('path')
 const userRoutes = require('./Routes/userRoutes')
 const userList = require('./Routes/listRoutes')
@@ -15,6 +16,7 @@ const app = express()
 
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cookieParser())
 
 app.use("/api/user", userRoutes)
 app.use("/api/todo", userList)
