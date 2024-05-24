@@ -78,10 +78,10 @@ function Signup() {
                         </div>
                         <button type="submit" className='border-2 w-3/4 border-black p-2 hover:bg-black hover:text-white transtion duration-150 disabled:hover:bg-white disabled:hover:text-black' disabled={isDisable}>Sign Up</button>
                         <Link to='/login' className='form-link'>Already have an account</Link>
-                        <hr className='border-1 w-full border-black my-2' />
+                        {/* <hr className='border-1 w-full border-black my-2' />
                         <button className='border-2 w-3/4 border-black p-2 hover:bg-black hover:text-white transtion duration-150'>Sign Up with Google</button>
                         <button className='border-2 w-3/4 border-black p-2 hover:bg-black hover:text-white transtion duration-150'>Sign Up with Facebook</button>
-                        <button className='border-2 w-3/4 border-black p-2 hover:bg-black hover:text-white transtion duration-150'>Sign Up with Twitter</button>
+                        <button className='border-2 w-3/4 border-black p-2 hover:bg-black hover:text-white transtion duration-150'>Sign Up with Twitter</button> */}
                     </form>
 
                 </div>

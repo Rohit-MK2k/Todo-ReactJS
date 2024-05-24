@@ -1,9 +1,25 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
+import {useDispatch, useSelector} from 'react-redux'
+import { useLoginMutation } from '../slices/userApiSlice'
+import { setCredentials } from '../slices/authSlice'
 
 function Login() {
-     const [isDisable, setDisable] = useState(true)
+    const [isDisable, setDisable] = useState(true)
+
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const [login, {isLoading}] = useLoginMutation()
+
+    const { userInfo } = useSelector((state) => state.auth)
+
+    useEffect(()=>{
+        if(userInfo){
+            navigate('/home')
+        }
+    }, [userInfo, navigate])
 
     const validate = (values) => {
         let errors = {}
@@ -24,10 +40,10 @@ function Login() {
             errors.password = '*Required'
             setDisable(true)
         }
-        else if (!passwordPattern.test(values.password)) {
-            errors.password = '*Invalid Password'
-            setDisable(true)
-        }
+        // else if (!passwordPattern.test(values.password)) {
+        //     errors.password = '*Invalid Password'
+        //     setDisable(true)
+        // }
         else {
             setDisable(false)
         }
@@ -41,8 +57,19 @@ function Login() {
             password: '',
         },
         validate,
-        onSubmit: values => {
-            console.log(JSON.stringify(values,null,2))
+        onSubmit: async values => {
+            // console.log(JSON.stringify(values,null,2))
+            // console.log(values.email)
+            try{
+                const res = await login({
+                    email: values.email,
+                    password: values.password
+                }).unwrap()
+                dispatch(setCredentials({...res}))
+                navigate('/home')
+            }catch(err){
+                console.log(err?.data?.message || err.error)
+            }
         }
     })
     return (
@@ -63,10 +90,10 @@ function Login() {
                         </div>
                         <button type="submit" className='border-2 w-3/4 border-black p-2 hover:bg-black hover:text-white transtion duration-150 disabled:hover:bg-white disabled:hover:text-black' disabled={isDisable}>Login</button>
                         <Link to='/signup' className='form-link'>Don't have an account</Link>
-                        <hr className='border-1 w-full border-black my-2' />
+                        {/* <hr className='border-1 w-full border-black my-2' />
                         <button className='border-2 w-3/4 border-black p-2 hover:bg-black hover:text-white transtion duration-150'>Login with Google</button>
                         <button className='border-2 w-3/4 border-black p-2 hover:bg-black hover:text-white transtion duration-150'>Login with Facebook</button>
-                        <button className='border-2 w-3/4 border-black p-2 hover:bg-black hover:text-white transtion duration-150'>Login with Twitter</button>
+                        <button className='border-2 w-3/4 border-black p-2 hover:bg-black hover:text-white transtion duration-150'>Login with Twitter</button> */}
                     </form>
 
                 </div>

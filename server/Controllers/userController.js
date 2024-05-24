@@ -50,9 +50,8 @@ const loginUser = asyncHandler(async (req, res) => {
     let {email, password} = req.body
 
     user = await userModel.findOne({ email })
-    comparePassword = await user.matchPassword(password)
 
-    if (user && comparePassword) {
+    if (user && (await user.matchPassword(password))) {
         generateToken(res, user._id)
         res.status(201).json({
             _id: user.id,
