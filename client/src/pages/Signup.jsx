@@ -1,9 +1,26 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
+import { useRegisterMutation } from '../slices/registerApiSlice'
+import { setCredentials } from '../slices/authSlice'
 
 function Signup() {
     const [isDisable, setDisable] = useState(true)
+
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const [register, {isLoading}] = useRegisterMutation()
+
+    const {userInfo} = useSelector((state) => state.auth)
+
+
+    useEffect(()=>{
+        if(userInfo){
+            navigate('/home')
+        }
+    }, [userInfo, navigate])
 
     const validate = (values) => {
         let errors = {}
@@ -31,10 +48,10 @@ function Signup() {
             errors.password = '*Required'
             setDisable(true)
         }
-        else if (!passwordPattern.test(values.password)) {
-            errors.password = '*Invalid Password'
-            setDisable(true)
-        }
+        // else if (!passwordPattern.test(values.password)) {
+        //     errors.password = '*Invalid Password'
+        //     setDisable(true)
+        // }
         else {
             setDisable(false)
         }
@@ -49,8 +66,19 @@ function Signup() {
             password: '',
         },
         validate,
-        onSubmit: values => {
-            console.log(JSON.stringify(values,null,2))
+        onSubmit: async values => {
+            // console.log(JSON.stringify(values,null,2))
+            try{
+                const res = await register({
+                    name: values.name,
+                    email: values.email,
+                    password: values.password
+                }).unwrap()
+                dispatch(setCredentials({...res}))
+                navigate('/home')
+            }catch(err){
+                console.log(err?.data?.message || err.error)
+            }
         }
     })
     
