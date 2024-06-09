@@ -5,7 +5,13 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      rotate: {
+        '-45': '-45deg',
+        '135': '135deg',
+        '-135': '-135deg',
+      }
+    },
   },
   plugins: [],
 }

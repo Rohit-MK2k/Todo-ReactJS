@@ -1,8 +1,13 @@
 import React from 'react'
+import NavBar from '../components/navbar'
 
 function Todo() {
   return (
-    <div>Todo</div>
+    <>
+      <div className='home h-screen'>
+        <NavBar/>
+      </div>        
+    </>
   )
 }
 
