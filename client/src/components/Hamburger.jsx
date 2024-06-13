@@ -5,14 +5,14 @@ import { setHamburgerOpen } from '../slices/hamburgerToggleSlice'
 const Hamburger = () => {
     const {isOpen} = useSelector((state) => state.toggleHamburder)
     // useEffect(()=>{
-      
+ 
     // },[isOpen])
-    const dash1 =  isOpen ? 'rotate-45 top-2' : 'rotate-0 top-0'
-    const dash2 =  isOpen ? 'translate-x-full opacity-0' : 'translate-x-0 top-2'
-    const dash3 =  isOpen ? 'rotate-[-45deg] top-2' : 'rotate-0 top-4'
+    const dash1 =  isOpen ? 'rotate-45' : 'rotate-0 translate-y-[-0.5rem]'
+    const dash2 =  isOpen ? 'opacity-0' : ''
+    const dash3 =  isOpen ? 'rotate-[-45deg]' : 'rotate-0 translate-y-2'
     return (
         <>
-            <div className='w-6 z-10 relative flex justify-center items-center flex-col'>
+            <div className='humburger-icon w-8 h-8 z-1000 relative flex items-center'>
                 <span className={`block bg-black w-full h-1 rounded-lg transition-all duration-300 absolute ${dash1}`}></span>
                 <span className={`block bg-black w-full h-1 rounded-lg transition-all duration-300 absolute ${dash2}`}></span>
                 <span className={`block bg-black w-full h-1 rounded-lg transition-all duration-300 absolute ${dash3}`}></span>

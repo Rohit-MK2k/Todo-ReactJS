@@ -10,6 +10,9 @@ export default {
         '-45': '-45deg',
         '135': '135deg',
         '-135': '-135deg',
+      },
+      translate: {
+        '-2': '-0.5rem'
       }
     },
   },
