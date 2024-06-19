@@ -6,6 +6,7 @@ const userRoutes = require('./Routes/userRoutes')
 const userList = require('./Routes/listRoutes')
 const bodyParser = require('body-parser')
 const { errorHandler } = require('./Middlewares/errorMiddleware')
+const { protect } = require('./Middlewares/authMiddleware')
 const connectDB = require('./Config/db')
 
 dotenv.config()
@@ -19,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 
 app.use("/api/user", userRoutes)
-app.use("/api/todo", userList)
+app.use("/api/todo",protect, userList)
 
 
 

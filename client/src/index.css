@@ -9,6 +9,29 @@
     margin: 0px;
     font-family: 'Short Stack', cursive;
 }
+
+::-webkit-scrollbar {
+    width: 0px;
+    background-color: transparent;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    display: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #FFBB5C;
+    border-radius: 100vh;
+}
+
+/* Handle on hover */
+/* ::-webkit-scrollbar-thumb:hover {
+    background: #000; 
+    opacity: 1;
+} */
+
 .splash,.sign-up,.login,.navber,.home{
     background-color: #FFBB5C;
 }

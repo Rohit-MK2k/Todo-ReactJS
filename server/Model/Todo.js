@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
 
 const todoModel = mongoose.Schema({
+    userID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        require: true
+    },
     task: {
         type: String,
         require: true,
@@ -16,7 +21,10 @@ const todoModel = mongoose.Schema({
     },
     endTime: {
         type: Date,
-        require: true,
+    },
+    isComplete:{
+        type: String,
+        default: 'onGoing',
     }
 },
 {
