@@ -8,7 +8,7 @@ const NavBar = () => {
   const navbar = useRef(null)
   const [isVisiable, setVisiable] = useState(false)
   // toggle state of open/close humburger icon from global state
-  const {isOpen} = useSelector((state) => state.toggleHamburder)
+  const {isOpen} = useSelector((state) => state.toggleHamburger)
   const dispatch = useDispatch()
   
   const options = {
@@ -30,9 +30,6 @@ const NavBar = () => {
     }
     
   }, [])
-  console.log("is visible ",isVisiable)
-  console.log("is open ", !isOpen)
-  console.log(isVisiable || !isOpen)
  
   return (
     <>

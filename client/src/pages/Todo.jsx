@@ -7,7 +7,7 @@ import TodoList from '../components/TodoList'
 
 
 function Todo() {
-  const {isOpen} = useSelector((state) => state.toggleHamburder)
+  const {isOpen} = useSelector((state) => state.toggleHamburger)
   const [disable, setDisable] = useState(true)
   const validate = (value) =>{
     let err = {}
@@ -35,11 +35,11 @@ function Todo() {
   })
   return (
     <>
-        <div className={`home ${isOpen}`}>
+        <div className={`home`}>
           <NavBar/>
           <div className="home-body min-h-[100vh] flex flex-col  items-center w-full">
 
-            <form onSubmit={formik.handleSubmit} className='mt-20 py-20 flex flex-col justify-between items-center bg-white min-h-[70vh] min-w-[55%]'>
+            <form onSubmit={formik.handleSubmit} className='my-20 py-20 flex flex-col justify-between items-center bg-white min-h-[70vh] min-w-[55%]'>
               <div className="form-group flex flex-col w-2/3">
                 <input type="text" name="task" id="task" className='form-field p-2' placeholder='Enter Your Name' onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.task}/>
                 <label htmlFor="task" className='form-label'>Enter your name of the Task</label>
@@ -65,6 +65,7 @@ function Todo() {
               
               <button type="submit" className='border-2 w-2/3 border-black p-2 hover:bg-black hover:text-white transtion duration-150 disabled:hover:bg-white disabled:hover:text-black' disabled={isOpen || disable}>ADD</button>
             </form>
+            
             <TodoList/>
 
           </div>

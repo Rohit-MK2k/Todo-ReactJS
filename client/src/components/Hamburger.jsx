@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setHamburgerOpen } from '../slices/hamburgerToggleSlice'
 
 const Hamburger = () => {
-    const {isOpen} = useSelector((state) => state.toggleHamburder)
+    const {isOpen} = useSelector((state) => state.toggleHamburger)
     // useEffect(()=>{
  
     // },[isOpen])
