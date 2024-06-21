@@ -1,7 +1,10 @@
 import {React, useEffect, useRef, useState} from 'react'
 import Hamburger from './Hamburger'
+import { useLogoutMutation } from '../slices/userApiSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { setHamburgerOpen } from '../slices/hamburgerToggleSlice'
+import { useNavigate } from 'react-router-dom'
+import { clearCredentials } from '../slices/authSlice'
 
 
 const NavBar = () => {
@@ -10,6 +13,9 @@ const NavBar = () => {
   // toggle state of open/close humburger icon from global state
   const {isOpen} = useSelector((state) => state.toggleHamburger)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const [logout, {isLoading}] = useLogoutMutation()
   
   const options = {
     rootMargin: "-30px",
@@ -30,6 +36,17 @@ const NavBar = () => {
     }
     
   }, [])
+
+  const handleLogOut = async() =>{
+    try{
+      const res = await logout()
+      dispatch(clearCredentials())
+      dispatch(setHamburgerOpen(false))
+      navigate('/')
+    }catch(err){
+      console.log("Something want wrong")
+    }
+  }
  
   return (
     <>
@@ -37,7 +54,7 @@ const NavBar = () => {
         <ul className='flex flex-col h-full'>
           <li className='p-2'>My Profile</li>
           <li className='p-2'>About Us</li>
-          <li className='log-out p-2 mt-auto hover:cursor-pointer'>Logout</li>
+          <li className='log-out p-2 mt-auto hover:cursor-pointer'><button onClick={handleLogOut}>{isLoading? 'Logging Out...':'Logout'}</button></li>
         </ul>
         
       </div>

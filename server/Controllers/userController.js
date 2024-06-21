@@ -66,7 +66,9 @@ const loginUser = asyncHandler(async (req, res) => {
     
 })
 
-
+// @desc   Fetch the user information
+// @route  GET / api / user / logout
+// @access Public
 const logOut = asyncHandler(async (req, res) =>{
     res.cookie('jwt', '',{
         httpOnly: true,

@@ -1,7 +1,32 @@
 import React from 'react'
 import { FaTimes, FaRegEdit } from "react-icons/fa";
 
-const TodoCard = () => {
+const TodoCard = ({item}) => {
+
+  function getDaySuffix(day) {
+    if (day > 3 && day < 21) return 'th'; // Covers 11th to 20th
+    switch (day % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+    }
+  }
+  const formatDate = (date) =>{
+    const day = date.getDate();
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const month = monthNames[date.getMonth()];
+    const year = date.getFullYear();
+    const daySuffix = getDaySuffix(day);
+
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${day}${daySuffix} ${month} ${year} | ${hours}:${minutes}`
+  }
+
+  let startTime = new Date(item.startTime)
+  let endTime = new Date(item.endTime)
+  // const endTime = new Date(item.endTime)
   return (
     <>
       <div className="todo-card bg-white mb-10 p-10 min-w-[55%] min-h-[25vh] flex items-center relative shadow-xl transition-all duration-200 hover:shadow-2xl hover:scale-[1.05]">
@@ -15,11 +40,11 @@ const TodoCard = () => {
         </div>
         <button className="edit text-2xl absolute right-[10%] bottom-[15%] transition-all duration-200 opacity-50 hover:opacity-100"><FaRegEdit /></button>
 
-        <div className="todo-detail flex flex-col">
-          <div className='task text-2xl'>Hi this is test task</div>
-          <div className='task-time text-sm flex justify-between p-2'>
-            <div className="start-time">1</div>
-            <div className="end-time">2</div>
+        <div className="todo-detail flex flex-col w-[50%]">
+          <div className='task text-2xl'>{item.task}</div>
+          <div className='task-time text-sm flex flex-col justify-between w-full mt-2'>
+            <div className="start-time"><strong>Start Time:</strong> {item.startTime? formatDate(startTime):''}</div>
+            <div className="end-time"><strong>End Time:</strong> {item.endTime? formatDate(endTime):''}</div>
           </div>
         </div>
       </div>

@@ -46,14 +46,7 @@ const newItem = asyncHandler(async(req, res) => {
 const getAllItems = asyncHandler(async(req, res)=>{
     if(req.user){
         const list = await listDB.find({userID: req.user._id})
-        console.log(list)
         res.status(201).json(list)
-        // if(list[0]){
-            
-        // }
-        // else{
-        //     res.status(201).json({message: "No task Added to the list"})
-        // }
     }else{
         res.status(401)
         throw new Error("Please login first or create a account")

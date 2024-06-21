@@ -5,7 +5,8 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Splash from './pages/Splash'
 import Todo from './pages/Todo'
-import NamePage from './pages/NamePage'
+import PrivateRoute from './components/PrivateRoute'
+
 
 
 function App() {
@@ -17,7 +18,11 @@ function App() {
           <Route path='/' element={<Splash/>} />
           <Route path='/login' element={<Login/>} />
           <Route path='/signup' element={<Signup />}/>
-          <Route path='/home' element={<Todo />} /> 
+          <Route path='' element={<PrivateRoute/>}>
+            <Route path='/home' element={<Todo />}>
+                
+            </Route> 
+          </Route>
         </Routes>
       </Router>
       

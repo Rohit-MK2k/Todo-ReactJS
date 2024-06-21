@@ -13,10 +13,13 @@ const todoListSlice = createSlice({
         },
         deleteAllTodoList: (state, action) => {
             state.list = []
+        },
+        addToList: (state, action) =>{
+            state.list = [state.list, ...action.payload]
         }
     }
 })
 
-export const {setTodoList, deleteAllTodoList} = todoListSlice.actions
+export const {setTodoList, deleteAllTodoList, addToList} = todoListSlice.actions
 
 export default todoListSlice.reducer
