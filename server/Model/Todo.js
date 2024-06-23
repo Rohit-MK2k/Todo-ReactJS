@@ -22,7 +22,7 @@ const todoModel = mongoose.Schema({
     endTime: {
         type: Date,
     },
-    isComplete:{
+    status:{
         type: String,
         default: 'onGoing',
     }

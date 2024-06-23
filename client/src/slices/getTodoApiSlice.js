@@ -1,6 +1,8 @@
 import { apiSlice } from "./apiSlice";
 const GETTODO_URL = '/api/todo/list'
 const POSTTODO_URL = '/api/todo'
+const DELETEONE_URL = '/api/todo/deleteOne'
+const CHANGESTAT_URL = '/api/todo/status'
 
 export const getTodoSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -16,8 +18,23 @@ export const getTodoSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: data
             })
-        }) 
+        }),
+        deleteOne: builder.mutation({
+            query: (data) =>({
+                url: `${DELETEONE_URL}`,
+                method: 'POST',
+                body: data
+            })
+        }),
+        changeStatus: builder.mutation({
+            query: (data) => ({
+                url: `${CHANGESTAT_URL}`,
+                method: 'POST',
+                body: data
+            })
+        })
+
     })
 })
 
-export const {useTodoListMutation, useAddTodoMutation} = getTodoSlice
+export const {useTodoListMutation, useAddTodoMutation, useDeleteOneMutation, useChangeStatusMutation} = getTodoSlice

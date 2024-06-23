@@ -16,7 +16,9 @@ const TodoList = () => {
   const getList = async()=>{
     try{
       const res = await TodoList()
-      dispatch(setTodoList(res.data))
+      if(res.data){
+        dispatch(setTodoList(res.data))
+      }
     }catch(err){
       console.log(err?.data?.message || err.error)
     }
@@ -24,9 +26,9 @@ const TodoList = () => {
 
   useEffect(()=>{
     getList()
-  },[])
+  },[list])
   return (
-      list.length>0 ? list.map((items)=><TodoCard key= {items.id} item= {items} />) : <div className='flex justify-center items-center text-3xl'>No item found</div>            
+      list.length>0 ? list.map((items)=><TodoCard key = {items._id} item= {items} />) : <div className='flex justify-center items-center text-3xl'>No item found</div>            
   )
 }
 

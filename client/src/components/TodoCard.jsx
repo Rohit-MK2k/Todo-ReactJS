@@ -1,9 +1,42 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FaTimes, FaRegEdit } from "react-icons/fa";
+import { useDispatch, useSelector } from 'react-redux';
+import { useDeleteOneMutation, useChangeStatusMutation } from '../slices/getTodoApiSlice';
+import { deleteOneTodo } from '../slices/todoSlice';
 
 const TodoCard = ({item}) => {
 
-  function getDaySuffix(day) {
+  const [stat, setStat] = useState(item.status)
+  const dispatch = useDispatch()
+  const [deleteOne, {isLoading}] = useDeleteOneMutation()
+  const [changeStatus, {isLoadingStatus}] = useChangeStatusMutation()
+  
+  const handleTodoDelete = async () =>{
+    try{
+      const delOne = await deleteOne({
+        id: item._id,
+      }).unwrap()
+      dispatch(deleteOneTodo(item._id))
+      console.log(delOne.data.message)
+    }catch(err){
+      console.log(err?.data?.message || err)
+    }
+  }
+
+  const handleChangeStatus = async (e) =>{
+    setStat(e.target.value)
+    try{
+      const change = await changeStatus({
+        id: item._id,
+        status: stat
+      }).unwrap()
+      console.log(change.message)
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  const getDaySuffix= (day) =>{
     if (day > 3 && day < 21) return 'th'; // Covers 11th to 20th
     switch (day % 10) {
         case 1: return 'st';
@@ -26,17 +59,16 @@ const TodoCard = ({item}) => {
 
   let startTime = new Date(item.startTime)
   let endTime = new Date(item.endTime)
-  // const endTime = new Date(item.endTime)
   return (
     <>
       <div className="todo-card bg-white mb-10 p-10 min-w-[55%] min-h-[25vh] flex items-center relative shadow-xl transition-all duration-200 hover:shadow-2xl hover:scale-[1.05]">
         <div className='todo-side-icon flex  absolute right-[10%] top-[15%]'>
-          <select className='status outline-0 hover:cursor-pointer'>
+          <select className='status outline-0 hover:cursor-pointer' value={stat} onChange={handleChangeStatus}>
             <option value="onGoing">onGoing</option>
             <option value="Pending">Pending</option>
             <option value="Complete">Complete</option>
           </select>
-          <button className='delete-cross ml-5'><FaTimes/></button>
+          <button className='delete-cross ml-5' onClick={handleTodoDelete}><FaTimes/></button>
         </div>
         <button className="edit text-2xl absolute right-[10%] bottom-[15%] transition-all duration-200 opacity-50 hover:opacity-100"><FaRegEdit /></button>
 
