@@ -3,9 +3,9 @@ import { FaTimes, FaRegEdit } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { useDeleteOneMutation, useChangeStatusMutation } from '../slices/getTodoApiSlice';
 import { deleteOneTodo } from '../slices/todoSlice';
+import { updateTodoState } from '../slices/todoSlice';
 
 const TodoCard = ({item}) => {
-
   const [stat, setStat] = useState(item.status)
   const dispatch = useDispatch()
   const [deleteOne, {isLoading}] = useDeleteOneMutation()
@@ -34,6 +34,14 @@ const TodoCard = ({item}) => {
     }catch(err){
       console.log(err)
     }
+  }
+
+  const handleUpdate = (e) =>{
+    console.log("hit")
+    dispatch(updateTodoState({
+      item,
+      edit: true
+    }))
   }
 
   const getDaySuffix= (day) =>{
@@ -70,7 +78,7 @@ const TodoCard = ({item}) => {
           </select>
           <button className='delete-cross ml-5' onClick={handleTodoDelete}><FaTimes/></button>
         </div>
-        <button className="edit text-2xl absolute right-[10%] bottom-[15%] transition-all duration-200 opacity-50 hover:opacity-100"><FaRegEdit /></button>
+        <button className="edit text-2xl absolute right-[10%] bottom-[15%] transition-all duration-200 opacity-50 hover:opacity-100" onClick={handleUpdate}><FaRegEdit /></button>
 
         <div className="todo-detail flex flex-col w-[50%]">
           <div className='task text-2xl'>{item.task}</div>

@@ -1,16 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import NavBar from '../components/NavBar'
 import {useFormik} from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
+import { useUpdateTodoMutation } from '../slices/getTodoApiSlice'
 import { useAddTodoMutation } from '../slices/getTodoApiSlice'
-import { addToList } from '../slices/todoSlice'
+import { addToList, updateOneTodo } from '../slices/todoSlice'
 import TodoList from '../components/TodoList'
 
 
 function Todo() {
   const {isOpen} = useSelector((state) => state.toggleHamburger)
+  const {editTodo} = useSelector((state)=> state.todoList)
   const dispatch = useDispatch()
   const [AddTodo, {isLoading}] = useAddTodoMutation()
+  const [updateTodo, {isLoadingUpdate}] = useUpdateTodoMutation()
 
   const [disable, setDisable] = useState(true)
   const validate = (value) =>{
@@ -43,21 +46,43 @@ function Todo() {
     },
     validate,
     onSubmit: async values =>{
-
       try{
-        const res = await AddTodo({
-          task: values.task,
-          comment: values.comment,
-          startTime: values.startTime,
-          endTime: values.endTime,
-          isComplete: 'onGoing',
-        }).unwrap()
-        dispatch(addToList({...res}))
+        if(editTodo.edit){
+          const res = await updateTodo({
+            id: editTodo.item._id,
+            task: values.task,
+            comment: values.comment,
+            startTime: values.startTime,
+            endTime: values.endTime,
+            isComplete: 'onGoing',
+          }).unwrap()
+          // dispatch(updateOneTodo({...res}))
+          console.log(res)
+        }else{
+          const res = await AddTodo({
+            task: values.task,
+            comment: values.comment,
+            startTime: values.startTime,
+            endTime: values.endTime,
+            isComplete: 'onGoing',
+          }).unwrap()
+          dispatch(addToList({...res}))
+        }
       }catch(err){
         console.log(err?.data?.message || err)
       }
     }
   })
+
+  useEffect(()=>{
+    if(editTodo.edit){
+      setDisable(false)
+      formik.setFieldValue("task", editTodo.item.task)
+      formik.setFieldValue("comment", editTodo.item.comment)
+      formik.setFieldValue("startTime", editTodo.item.startTime)
+      formik.setFieldValue("endTime", editTodo.item.endTime)
+    }
+  },[editTodo])
   return (
     <>
         <div className={`home`}>

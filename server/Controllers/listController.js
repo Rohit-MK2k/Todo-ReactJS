@@ -92,5 +92,33 @@ const changeStatus = asyncHandler(async (req, res) =>{
     }
 })
 
+// @desc   Update the status of TODO
+// @route  GET / api / Todo / status
+// @access Private
+const updateTodo = asyncHandler(async (req, res) =>{
+    if(req.user){
+        const filter = { _id: req.body.id }
+        console.log(filter)
+        const update = { 
+            task: req.body.task,
+            comment: req.body.comment,
+            startTime: req.body.startTime,
+            endTime: req.body.endTime,
+            status: 'onGoing'
+        }
+        const newTodo = await listDB.findOneAndUpdate(filter, update)
+        console.log(newTodo)
+        if(newTodo){
+            res.status(201).json({message: 'Update Sucessful'})
+        }else{
+            res.status(400)
+            throw new Error('Update not Sucessful')
+        }
+    }else{
+        res.status(401)
+        throw new Error("Please login first or create a account")
+    }
+})
 
-module.exports = {newItem, getAllItems, deleteItem, changeStatus}
+
+module.exports = {newItem, getAllItems, deleteItem, changeStatus, updateTodo}
