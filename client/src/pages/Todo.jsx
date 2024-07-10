@@ -4,7 +4,7 @@ import {useFormik} from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
 import { useUpdateTodoMutation } from '../slices/getTodoApiSlice'
 import { useAddTodoMutation } from '../slices/getTodoApiSlice'
-import { addToList, updateOneTodo } from '../slices/todoSlice'
+import { addToList } from '../slices/todoSlice'
 import TodoList from '../components/TodoList'
 
 
@@ -36,7 +36,7 @@ function Todo() {
     }
     return err
   }
-  console.log()
+
   const formik = useFormik({
     initialValues: {
       task: '',
@@ -56,7 +56,6 @@ function Todo() {
             endTime: values.endTime,
             isComplete: 'onGoing',
           }).unwrap()
-          // dispatch(updateOneTodo({...res}))
           console.log(res)
         }else{
           const res = await AddTodo({
@@ -86,7 +85,6 @@ function Todo() {
   return (
     <>
         <div className={`home`}>
-          <NavBar/>
           <div className="home-body min-h-[100vh] flex flex-col  items-center w-full">
             <form onSubmit={formik.handleSubmit} className='my-20 py-20 flex flex-col justify-between items-center bg-white min-h-[70vh] min-w-[55%]'>
               <div className="form-group flex flex-col w-2/3">

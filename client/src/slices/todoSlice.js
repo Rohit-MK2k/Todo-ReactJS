@@ -5,6 +5,10 @@ const initialState = {
     editTodo: {
         item: {},
         edit: false
+    },
+    showList : {
+        item: [],
+        show: false
     }
 }
 
@@ -31,20 +35,13 @@ const todoListSlice = createSlice({
             state.editTodo.edit = edit
             state.editTodo.item = item
         },
-        updateOneTodo: (state, action) =>{
-            const {id, task, comment, startTime, endTime} = action.payload
-            state.list.forEach(item =>{
-                if(item.id === id){
-                    item.task = task,
-                    item.comment = comment,
-                    item.startTime = startTime,
-                    item.endTime = endTime
-                }
-            })
+        showOneTodo: (state, action) =>{
+            state.showList.item = action.payload
+            state.showList.show = state.showList.show ? false : true
         }
     }
 })
 
-export const {setTodoList, deleteAllTodoList, addToList, deleteOneTodo, updateTodoState, updateOneTodo} = todoListSlice.actions
+export const {setTodoList, deleteAllTodoList, addToList, deleteOneTodo, updateTodoState, updateOneTodo, showOneTodo} = todoListSlice.actions
 
 export default todoListSlice.reducer

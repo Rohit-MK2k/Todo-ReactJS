@@ -3,12 +3,16 @@ import Hamburger from './Hamburger'
 import { useLogoutMutation } from '../slices/userApiSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { setHamburgerOpen } from '../slices/hamburgerToggleSlice'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { clearCredentials } from '../slices/authSlice'
 
 
+
+
 const NavBar = () => {
-  const navbar = useRef(null)
+  const sideNav = useRef(null)
+  const nav = useRef(null)
+
   const [isVisiable, setVisiable] = useState(false)
   // toggle state of open/close humburger icon from global state
   const {isOpen} = useSelector((state) => state.toggleHamburger)
@@ -27,8 +31,8 @@ const NavBar = () => {
       setVisiable(entry.isIntersecting)
     },options)
 
-    if (navbar.current) {
-      observer.observe(navbar.current)
+    if (nav.current) {
+      observer.observe(nav.current)
     }
 
     return () =>{
@@ -37,6 +41,23 @@ const NavBar = () => {
     
   }, [])
 
+  function handleClickOutside(event) {
+    if(isOpen){
+      if (sideNav.current && !sideNav.current.contains(event.target)) {
+        dispatch(setHamburgerOpen(false))
+      }
+    }
+  }
+
+  // closes Side navber by clicking outside 
+    useEffect(() => {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+  }, [sideNav, isOpen]);
+
+  
   const handleLogOut = async() =>{
     try{
       const res = await logout()
@@ -47,18 +68,26 @@ const NavBar = () => {
       console.log("Something want wrong")
     }
   }
- 
+
+  const toProfile = () =>{
+    
+  }
+  
+  const toAbout = () =>{
+
+  }
+
   return (
     <>
-      <div className={`side-nav fixed z-10 h-screen flex flex-col items-center text-center text-3xl border-0 transition-all duration-500 pt-32 pb-[4.5rem] bg-[#FFBB5C] ${isOpen ? 'w-2/5 shadow-[0_0_0_10000px_rgba(0,0,0,.50)]': 'w-0 [&_ul]:hidden'}`}>
-        <ul className='flex flex-col h-full'>
-          <li className='p-2'>My Profile</li>
-          <li className='p-2'>About Us</li>
+      <div ref={ sideNav } className={`side-nav outline-0 fixed z-10 h-screen flex flex-col items-center text-center text-3xl border-0 transition-all duration-500 pt-32 pb-[4.5rem] bg-[#FFBB5C] ${isOpen ? 'w-2/5 shadow-[0_0_0_10000px_rgba(0,0,0,.50)]': 'w-0 [&_ul]:hidden'}`}>
+        <ul className='flex flex-col h-full w-[90%]'>
+          <li className='p-2 my-2 transition-all duration-300 hover:bg-black/20 w-full'><Link to='profile' onClick={()=>dispatch(setHamburgerOpen(false))}>My Profile</Link></li>
+          <li className='p-2 my-2 transition-all duration-300 hover:bg-black/20 w-full'><Link to='about' onClick={()=>dispatch(setHamburgerOpen(false))}>About Us</Link></li>
           <li className='log-out p-2 mt-auto hover:cursor-pointer'><button onClick={handleLogOut}>{isLoading? 'Logging Out...':'Logout'}</button></li>
         </ul>
         
       </div>
-      <div className='navbar h-20 border-b-2 px-16 border-black flex flex-row items-center relative' ref={navbar}>
+      <div className='navbar h-20 border-b-2 px-16 bg-[#FFBB5C] border-black flex flex-row items-center relative' ref={nav}>
         <button className={`hamburger p-1 transition-all duration-300 z-20 ${humburgerDynamicStyle}`}  onClick={()=> dispatch(setHamburgerOpen(isOpen? false:true))}>
           <Hamburger/>
         </button>

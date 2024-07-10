@@ -98,7 +98,6 @@ const changeStatus = asyncHandler(async (req, res) =>{
 const updateTodo = asyncHandler(async (req, res) =>{
     if(req.user){
         const filter = { _id: req.body.id }
-        console.log(filter)
         const update = { 
             task: req.body.task,
             comment: req.body.comment,
@@ -107,7 +106,6 @@ const updateTodo = asyncHandler(async (req, res) =>{
             status: 'onGoing'
         }
         const newTodo = await listDB.findOneAndUpdate(filter, update)
-        console.log(newTodo)
         if(newTodo){
             res.status(201).json({message: 'Update Sucessful'})
         }else{
