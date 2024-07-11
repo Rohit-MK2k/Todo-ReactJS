@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const userModel = require('../Model/User')
+const listDB = require('../Model/Todo')
 const generateToken = require('../Utils/generateToken')
 
 // @desc   Register new user
@@ -92,7 +93,36 @@ const getUser = asyncHandler(async (req, res) => {
     res.status(200).json(user)
 })
 
+// @desc   Update the status of TODO
+// @route  POST / api / user / profile
+// @access Private
+const changePassword = asyncHandler(async (req, res) =>{
+    if(req.user){
+        const { newPassword } = req.body
+        const filter = {_id: req.user._id }
+        const update = {
+            password: newPassword
+        }
+        const pass = await userModel.findOneAndUpdate(filter, update)
+        if(pass){
+            res.status(201).json({message: 'Update Sucessful'})
+        }else{
+            res.status(400)
+            throw new Error('Update not Sucessful')
+        }
+    }else{
+        res.status(401)
+        throw new Error("Please login first or create a account")
+    }
+})
+
+// @desc   Fetch the user information
+// @route  POST / api / user / delete
+// @access Public
+const deleteAcc = asyncHandler(async (req, res) =>{
 
 
+})
 
-module.exports = { registerUser, loginUser, getUser, logOut }
+
+module.exports = { registerUser, loginUser, getUser, logOut, changePassword, deleteAcc }
