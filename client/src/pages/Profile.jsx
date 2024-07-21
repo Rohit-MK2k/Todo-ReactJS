@@ -1,11 +1,14 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useChangePasswordMutation, useDeleteAccMutation } from '../slices/userApiSlice'
+import { clearCredentials } from '../slices/authSlice'
+import { useNavigate } from 'react-router-dom'
 
 
 const Profile = () => {
   const {userInfo} = useSelector((state)=> state.auth)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [changePassword, {isLoading}] = useChangePasswordMutation()
   const [deleteAcc, {isLoadingDelete}] = useDeleteAccMutation()
 
@@ -26,6 +29,8 @@ const Profile = () => {
     if(delOk){
       try{
         const res = await deleteAcc()
+        dispatch(clearCredentials())
+        navigate('/')
         console.log(res)
       }catch(err){
         console.log(err)
@@ -46,7 +51,7 @@ const Profile = () => {
           </div>
           <div className='my-7 w-[55%] flex justify-between'>
             <button className='border-2  min-w-[20%] border-black p-2 hover:bg-black hover:text-white transtion duration-150 disabled:hover:bg-white disabled:hover:text-black' onClick={openChangePassword}>Change Password</button>
-            <button className='border-2  min-w-[20%]  border-black p-2 hover:bg-red-600  transtion duration-150 disabled:hover:bg-white disabled:hover:text-black' onClick={openDeleteAcc}>Delete Account</button>
+            {/* <button className='border-2  min-w-[20%]  border-black p-2 hover:bg-red-600  transtion duration-150 disabled:hover:bg-white disabled:hover:text-black' onClick={openDeleteAcc}>Delete Account</button> */}
           </div>
         </div>
       </div>

@@ -39,13 +39,22 @@ const TodoCard = ({item}) => {
   }
 
   const handleUpdate = (e) =>{
-    console.log("hit")
     dispatch(updateTodoState({
       item,
       edit: true
     }))
   }
 
+  const handleShow = () =>{
+    alert(
+      'Task:   '+item.task+'\n'+
+      'Comment   '+item.comment+'\n'+
+      'Start Time   '+formatDate(startTime)+'\n'+
+      'End Time   '+formatDate(endTime)+'\n'
+    )
+
+    // dispatch(showOneTodo(item))
+  }
   const getDaySuffix= (day) =>{
     if (day > 3 && day < 21) return 'th'; // Covers 11th to 20th
     switch (day % 10) {
@@ -71,7 +80,7 @@ const TodoCard = ({item}) => {
   let endTime = new Date(item.endTime)
   return (
     <>
-      <button onClick={() => dispatch(showOneTodo(item))} className="todo-card bg-white mb-10 p-10 min-w-[55%] min-h-[25vh] flex justify-start items-center relative shadow-xl transition-all duration-200 hover:shadow-2xl hover:scale-[1.05]">
+      <button onClick={handleShow} className="todo-card bg-white mb-10 p-10 min-w-[55%] min-h-[25vh] flex justify-start items-center relative shadow-xl transition-all duration-200 hover:shadow-2xl hover:scale-[1.05]">
         <div className='todo-side-icon flex  absolute right-[10%] top-[15%]'>
           <select className='status outline-0 hover:cursor-pointer' value={stat} onChange={handleChangeStatus}>
             <option value="onGoing">onGoing</option>
