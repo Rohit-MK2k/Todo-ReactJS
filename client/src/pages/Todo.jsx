@@ -6,11 +6,14 @@ import { useUpdateTodoMutation } from '../slices/getTodoApiSlice'
 import { useAddTodoMutation } from '../slices/getTodoApiSlice'
 import { addToList } from '../slices/todoSlice'
 import TodoList from '../components/TodoList'
+import { setTodoList, deleteAllTodoList } from '../slices/todoSlice'
+import { useTodoListMutation } from '../slices/getTodoApiSlice'
 
 
 function Todo() {
   const {isOpen} = useSelector((state) => state.toggleHamburger)
   const {editTodo} = useSelector((state)=> state.todoList)
+  const [TodoListState, {isLoadingTodo}] = useTodoListMutation()
   const dispatch = useDispatch()
   const [AddTodo, {isLoading}] = useAddTodoMutation()
   const [updateTodo, {isLoadingUpdate}] = useUpdateTodoMutation()
@@ -37,6 +40,17 @@ function Todo() {
     return err
   }
 
+  const getList = async()=>{
+    try{
+      const res = await TodoListState()
+      if(res.data){
+        dispatch(setTodoList(res.data))
+      }
+    }catch(err){
+      console.log(err?.data?.message || err.error)
+    }
+  }
+
   const formik = useFormik({
     initialValues: {
       task: '',
@@ -56,6 +70,7 @@ function Todo() {
             endTime: values.endTime,
             isComplete: 'onGoing',
           }).unwrap()
+          getList()
           console.log(res)
         }else{
           const res = await AddTodo({
@@ -65,7 +80,7 @@ function Todo() {
             endTime: values.endTime,
             isComplete: 'onGoing',
           }).unwrap()
-          dispatch(addToList({...res}))
+          getList()
         }
       }catch(err){
         console.log(err?.data?.message || err)

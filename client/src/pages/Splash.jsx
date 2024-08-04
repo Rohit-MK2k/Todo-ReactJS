@@ -1,7 +1,15 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
+import React, { useEffect } from 'react'
+import {Link, useNavigate} from 'react-router-dom'
+import {useDispatch, useSelector} from 'react-redux'
 
 function Splash() {
+    const navigate = useNavigate()
+    const { userInfo } = useSelector((state) => state.auth)
+    useEffect(()=>{
+        if(userInfo){
+            navigate('/home')
+        }
+    },[userInfo, navigate])
     return (
         <>
             <div className='splash flex flex-col justify-center items-center h-screen '>

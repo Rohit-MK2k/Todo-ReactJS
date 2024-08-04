@@ -1,44 +1,76 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaTimes, FaRegEdit } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { useDeleteOneMutation, useChangeStatusMutation } from '../slices/getTodoApiSlice';
-import { deleteOneTodo } from '../slices/todoSlice';
+import { setTodoList, deleteOneTodo } from '../slices/todoSlice';
 import { updateTodoState, showOneTodo } from '../slices/todoSlice';
+import { useTodoListMutation } from '../slices/getTodoApiSlice'
 
 const TodoCard = ({item}) => {
   const [stat, setStat] = useState(item.status)
-
+  const [TodoList, {todoIsLoading}] = useTodoListMutation()
   const dispatch = useDispatch()
   const [deleteOne, {isLoading}] = useDeleteOneMutation()
   const [changeStatus, {isLoadingStatus}] = useChangeStatusMutation()
   
+  let startTime = item.startTime? new Date(item.startTime): null
+  let endTime = item.endTime? new Date(item.endTime): null
 
-  const handleTodoDelete = async () =>{
+  useEffect(()=>{
+    handleChangeStatus()
+  },[stat])
+
+  //change status on endTime
+  if (endTime){
+    if(stat !== "Complete"){
+      const delay = endTime - new Date();
+      if(delay>0){
+        setTimeout(()=>{
+          setStat("Pending")
+          let al = alert('Task "'+item.task+'"status changes "Pending"')
+        },delay)
+      }
+    }
+  }
+
+  const getList = async()=>{
     try{
-      const delOne = await deleteOne({
-        id: item._id,
-      }).unwrap()
-      dispatch(deleteOneTodo(item._id))
-      console.log(delOne.data.message)
+      const res = await TodoList()
+      if(res.data){
+        dispatch(setTodoList(res.data))
+      }
     }catch(err){
       console.log(err?.data?.message || err)
     }
   }
 
-  const handleChangeStatus = async (e) =>{
-    setStat(e.target.value)
+  const handleTodoDelete = async (e) =>{
+    e.stopPropagation()
+    try{
+      const delOne = await deleteOne({
+        id: item._id,
+      }).unwrap()
+      getList()
+      console.log(delOne)
+    }catch(err){
+      console.log(err?.data?.message || err)
+    }
+  }
+
+  const handleChangeStatus = async () =>{
     try{
       const change = await changeStatus({
         id: item._id,
         status: stat
       }).unwrap()
-      console.log(change.message)
+      console.log(change)
     }catch(err){
       console.log(err)
     }
   }
 
   const handleUpdate = (e) =>{
+    e.stopPropagation()
     dispatch(updateTodoState({
       item,
       edit: true
@@ -46,11 +78,13 @@ const TodoCard = ({item}) => {
   }
 
   const handleShow = () =>{
+    const start = startTime ? formatDate(startTime): " "
+    const end = endTime? formatDate(endTime): " "
     alert(
       'Task:   '+item.task+'\n'+
       'Comment   '+item.comment+'\n'+
-      'Start Time   '+formatDate(startTime)+'\n'+
-      'End Time   '+formatDate(endTime)+'\n'
+      'Start Time   '+start+'\n'+
+      'End Time   '+end+'\n'
     )
 
     // dispatch(showOneTodo(item))
@@ -76,13 +110,11 @@ const TodoCard = ({item}) => {
     return `${day}${daySuffix} ${month} ${year} | ${hours}:${minutes}`
   }
 
-  let startTime = new Date(item.startTime)
-  let endTime = new Date(item.endTime)
   return (
     <>
       <button onClick={handleShow} className="todo-card bg-white mb-10 p-10 min-w-[55%] min-h-[25vh] flex justify-start items-center relative shadow-xl transition-all duration-200 hover:shadow-2xl hover:scale-[1.05]">
         <div className='todo-side-icon flex  absolute right-[10%] top-[15%]'>
-          <select className='status outline-0 hover:cursor-pointer' value={stat} onChange={handleChangeStatus}>
+          <select className='status outline-0 hover:cursor-pointer' value={stat} onClick={(e)=>e.stopPropagation()} onChange={(e)=>setStat(e.target.value)}>
             <option value="onGoing">onGoing</option>
             <option value="Pending">Pending</option>
             <option value="Complete">Complete</option>
