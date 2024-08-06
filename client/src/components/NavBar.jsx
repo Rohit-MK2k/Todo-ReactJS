@@ -69,22 +69,14 @@ const NavBar = () => {
     }
   }
 
-  const toProfile = () =>{
-    
-  }
-  
-  const toAbout = () =>{
-
-  }
-
   return (
     <>
       <div ref={ sideNav } className={`side-nav outline-0 fixed z-10 h-screen flex flex-col items-center text-center text-3xl border-0 transition-all duration-500 pt-32 pb-[4.5rem] bg-[#FFBB5C] ${isOpen ? 'w-2/5 shadow-[0_0_0_10000px_rgba(0,0,0,.50)]': 'w-0 [&_ul]:hidden'}`}>
-        <ul className='flex flex-col h-full w-[90%]'>
-        <li className='p-2 my-2 transition-all duration-300 hover:bg-black/20 w-full'><Link to='/home' onClick={()=>dispatch(setHamburgerOpen(false))}>Home</Link></li>
-          <li className='p-2 my-2 transition-all duration-300 hover:bg-black/20 w-full'><Link to='profile' onClick={()=>dispatch(setHamburgerOpen(false))}>My Profile</Link></li>
-          <li className='p-2 my-2 transition-all duration-300 hover:bg-black/20 w-full'><Link to='about' onClick={()=>dispatch(setHamburgerOpen(false))}>About Us</Link></li>
-          <li className='log-out p-2 mt-auto hover:cursor-pointer'><button onClick={handleLogOut}>{isLoading? 'Logging Out...':'Logout'}</button></li>
+        <ul className='flex flex-col items-center h-full w-[90%]'>
+          <li className='p-2 my-2 transition-all duration-300 rounded-full hover:bg-black/20 w-[75%] hover:scale-105'><Link to='/home' onClick={()=>dispatch(setHamburgerOpen(false))}>Home</Link></li>
+          <li className='p-2 my-2 transition-all duration-300 rounded-full hover:bg-black/20 w-[75%] hover:scale-105'><Link to='profile' onClick={()=>dispatch(setHamburgerOpen(false))}>My Profile</Link></li>
+          <li className='p-2 my-2 transition-all duration-300 rounded-full hover:bg-black/20 w-[75%] hover:scale-105'><Link to='about' onClick={()=>dispatch(setHamburgerOpen(false))}>About Developer</Link></li>
+          <li className='log-out p-2 mt-auto rounded-full transition-all w-full duration-300 hover:bg-black/20 hover:cursor-pointer'><button onClick={handleLogOut}>{isLoading? 'Logging Out...':'Logout'}</button></li>
         </ul>
         
       </div>

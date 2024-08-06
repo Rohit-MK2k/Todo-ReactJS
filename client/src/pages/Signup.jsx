@@ -104,7 +104,7 @@ function Signup() {
                             <label htmlFor="password" className='form-label '>Enter your Password</label>
                             {formik.touched.password && formik.errors.password ? <div className='pt-1 text-xs text-red-600'>{formik.errors.password}</div> : null}
                         </div>
-                        <button type="submit" className='border-2 w-3/4 border-black p-2 hover:bg-black hover:text-white transtion duration-150 disabled:hover:bg-white disabled:hover:text-black' disabled={isDisable}>Sign Up</button>
+                        <button type="submit" className='border-2 w-3/4 border-black p-2 hover:bg-black hover:text-white transtion duration-150 disabled:hover:text-black disabled:hover:bg-white' disabled={isDisable}>{isLoading ? '...loading': 'Sign Up'}</button>
                         <Link to='/login' className='form-link'>Already have an account</Link>
                         {/* <hr className='border-1 w-full border-black my-2' />
                         <button className='border-2 w-3/4 border-black p-2 hover:bg-black hover:text-white transtion duration-150'>Sign Up with Google</button>
