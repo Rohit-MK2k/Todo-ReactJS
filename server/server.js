@@ -26,7 +26,8 @@ app.use("/api/todo",protect, userList)
 
 // --------------------------deployment------------------------------
 
-const __dirname1 = path.resolve()
+// const __dirname1 = path.resolve()
+const __dirname1 = 'https://todo-react-js-beryl.vercel.app/'
 
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname1, "client/dist")))
