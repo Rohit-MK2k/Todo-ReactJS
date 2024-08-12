@@ -30,9 +30,9 @@ app.use("/api/todo",protect, userList)
 const __dirname1 = 'https://todo-react-js-beryl.vercel.app/'
 
 if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname1, "client/dist")))
+    app.use(express.static(path.join(__dirname1, "/dist")))
     app.get("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname1,"client","dist","index.html"))   
+        res.sendFile(path.resolve(__dirname1,"dist","index.html"))   
     })
 } else {
     app.get("/", (req, res) => {
