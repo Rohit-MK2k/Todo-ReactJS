@@ -1,7 +1,5 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import dotenv from 'dotenv/config'
-
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,7 +8,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api':{
-        target: "import.meta.env.PRODUCTION_SERVER",
+        target: `${import.meta.env.VITE_SERVER_API}`,
         changeOrigin: true,
       }
     }
