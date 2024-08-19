@@ -12,6 +12,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
     "axios": "^1.5.0",
+    "dotenv": "^16.4.5",
     "formik": "^2.4.4",
     "react": "^18.2.0",
     "react-datetime-picker": "^6.0.1",
