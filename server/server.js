@@ -8,9 +8,19 @@ const bodyParser = require('body-parser')
 const { errorHandler } = require('./Middlewares/errorMiddleware')
 const { protect } = require('./Middlewares/authMiddleware')
 const connectDB = require('./Config/db')
+const cors = require('cors')
+
 
 dotenv.config()
 const port = process.env.PORT
+
+let corsOptions = {
+    origin : [process.env.NODE_ENV === 'production' ? process.env.CLENT_URL :  'http://localhost:3000/']
+}
+
+app.use(cors(corsOptions))
+
+
 connectDB()
 
 const app = express()
