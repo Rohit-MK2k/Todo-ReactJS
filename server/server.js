@@ -18,13 +18,13 @@ let corsOptions = {
     origin : [process.env.NODE_ENV === 'production' ? process.env.CLENT_URL :  'http://localhost:3000/']
 }
 
-app.use(cors(corsOptions))
 
 
 connectDB()
 
 const app = express()
 
+app.use(cors(corsOptions))
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
