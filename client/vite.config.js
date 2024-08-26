@@ -5,7 +5,7 @@ import dotenv from 'dotenv'
 // https://vitejs.dev/config/
 export default defineConfig(({mode}) =>{
     const env = loadEnv(mode, process.cwd());
-    const API_URL = `${env.VITE_PRODUCTION_SERVER ?? 'http://localhost:5000'}`;
+    const API_URL = `${env.VITE_CLIENT_ENV === 'production'? env.VITE_PRODUCTION_SERVER : 'http://localhost:5000'}`;
     const PORT = `${env.VITE_PORT ?? '3000'}`;
     return {
       plugins: [react()],
