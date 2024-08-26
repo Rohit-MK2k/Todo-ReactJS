@@ -15,7 +15,8 @@ dotenv.config()
 const port = process.env.PORT
 
 let corsOptions = {
-    origin : [process.env.NODE_ENV === 'production' ? process.env.CLENT_URL :  'http://localhost:3000/']
+    origin : [process.env.NODE_ENV === 'production' ? process.env.CLENT_URL :  'http://localhost:3000'],
+    credentials: true
 }
 
 
