@@ -13,10 +13,9 @@ const cors = require('cors')
 
 dotenv.config()
 const port = process.env.PORT
-const originURL = process.env.NODE_ENV === 'production' ? process.env.CLENT_URL :  'http://localhost:3000'
+
 let corsOptions = {
-    origin : [originURL],
-    credentials: true
+    origin : [process.env.NODE_ENV === 'production' ? process.env.CLENT_URL :  'http://localhost:3000']
 }
 
 
@@ -25,13 +24,13 @@ connectDB()
 
 const app = express()
 
-app.use(cors(corsOptions))
+// app.use()
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 
-app.use("/api/user", userRoutes)
-app.use("/api/todo",protect, userList)
+app.use("/api/user",cors(corsOptions), userRoutes)
+app.use("/api/todo",protect,cors(corsOptions),userList)
 
 
 
