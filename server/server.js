@@ -24,12 +24,12 @@ connectDB()
 
 const app = express()
 
-// app.use()
+app.use(cors(corsOptions))
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 
-app.use("/api/user",cors(corsOptions), userRoutes)
+app.use("/api/user", userRoutes)
 app.use("/api/todo",protect,cors(corsOptions),userList)
 
 
