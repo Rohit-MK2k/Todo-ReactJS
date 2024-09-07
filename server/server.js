@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 
 app.use("/api/user", userRoutes)
-app.use("/api/todo",protect,cors(corsOptions),userList)
+app.use("/api/todo",protect, userList)
 
 
 
